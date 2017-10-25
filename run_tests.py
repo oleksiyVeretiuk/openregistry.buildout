@@ -15,44 +15,35 @@ nose_env = {
 }
 
 
-def get_tests(packages):
-    cover_packages = list()
+def get_tests(packages, test_type):
+    tested_packages = list()
     all_tests = list()
     for pack in packages:
-        group = pack.split('.')[0] if pack.split('.')[0:1] else ''
-        for entry_point in iter_entry_points(group=group + '.tests'):
+        group = pack.split('.')[0] if pack.split('.')[0:1] else None
+        if group is None:
+            continue
+        for entry_point in iter_entry_points(group=group + '.' + test_type):
             package_name = group + '.{}'
             package_name = package_name.format(entry_point.name)
-            cover_packages.append(package_name)
+            tested_packages.append(package_name)
             suite = entry_point.load()
             if package_name.startswith(pack):
-                for tests in suite():
-                    all_tests.append(tests)
-    return all_tests, cover_packages
+                if test_type == 'tests':
+                    for tests in suite():
+                        all_tests.append(tests)
+                elif test_type == 'pytests':
+                    all_tests.append(suite)
+    return all_tests, tested_packages
 
 
-def get_pytests(packages):
-    pytests = list()
-    pytest_packages = list()
-    for pack in packages:
-        group = pack.split('.')[0] if pack.split('.')[0:1] else ''
-        for entry_point in iter_entry_points(group=group + '.pytests'):
-            package_name = group + '.{}'.format(entry_point.name)
-            pytest_packages.append(package_name)
-            if package_name.startswith(pack):
-                pytests.append(entry_point.load())
-    return pytests, pytest_packages
-
-
-def unpack_suites(suites, tests, parent=None):
+def unpack_suites(suites):
+    tests = list()
     for suite in suites:
         if hasattr(suite, '_tests'):
-            unpack_suites(suite._tests, tests, parent=suite)
-        elif parent:
-            tests += parent._tests
-            return
+            tests += unpack_suites(suite._tests)
         else:
-            tests += suite
+            tests.append(suite)
+    return tests
 
 
 if __name__ == '__main__':
@@ -69,8 +60,9 @@ if __name__ == '__main__':
                         const=True, default=False,
                         help='List packages that can be tested')
     args = parser.parse_args()
-    nose_tests, cover_packages = get_tests(list(set(args.packages)))
-    pytests, pytest_packages = get_pytests(args.packages)
+    unique_packages = set(args.packages)
+    nose_tests, cover_packages = get_tests(unique_packages, 'tests')
+    pytests, pytest_packages = get_tests(unique_packages, 'pytests')
     if args.list_packages:
         logger.info('NOSETESTS:')
         for p in cover_packages:
@@ -80,7 +72,6 @@ if __name__ == '__main__':
             logger.info("> {}".format(p))
         exit()
     nose_env['NOSE_COVER_PACKAGE'] = cover_packages
-    unpacked_tests = []
-    unpack_suites(nose_tests, unpacked_tests)
+    unpacked_tests = unpack_suites(nose_tests)
     sys.exit([suite() for suite in pytests],
              nose.run_exit(suite=unpacked_tests, env=nose_env))
