@@ -13,13 +13,26 @@ handlers:
     level: INFO
     formatter: simple
     stream: ext://sys.stdout
+{% if 'journal' in options %}
+  journal:
+    class: ExtendedJournalHandler.ExtendedJournalHandler
+    formatter: simple
+    level: INFO
+    SYSLOG_IDENTIFIER: PENSTOCK
+{% end %}
 
 loggers:
   replichecker:
     handlers: [console]
     propagate: no
     level: INFO
-
+{% if 'exc_logger' in options %}
+  logger_exc_logger:
+    level: ERROR
+    handlers: {% if 'journal' in options %}journal{% end %}
+    qualname: exc_logger
+    propagate: 0
+{% end %}
   "":
     handlers: [console]
     level: INFO

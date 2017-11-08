@@ -89,12 +89,24 @@ handlers:
     class: statsdhandler.StatsdHandler
     level: DEBUG
     config_path: "/path/to/buildout_dir/openregistry.buildout/example_etc/statd_api_handler.yaml"
+  journal:
+    class: ExtendedJournalHandler.ExtendedJournalHandler
+    formatter: simple
+    level: INFO
+    SYSLOG_IDENTIFIER: CONCIERGE
+
 
 loggers:
   openregistry.concierge.worker:
     handlers: [console,statsd]
     propagate: no
     level: DEBUG
+
+  logger_exc_logger:
+    level: ERROR
+    handlers: journal
+    qualname: exc_logger
+    propagate: 0
 
   "":
     handlers: [console,statsd]
