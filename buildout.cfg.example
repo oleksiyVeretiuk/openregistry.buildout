@@ -13,6 +13,7 @@ resources_api_version = 0.1
 resources_api_server = http://${circus.ini:web_host}:${circus.ini:web_port}
 couch_user = ""
 couch_password = ""
+exc_logger = 1
 
 [concierge.yaml]
 lots_url = ${data_bridge_defaults:resources_api_server}
@@ -21,10 +22,12 @@ lots_api_version = ${data_bridge_defaults:resources_api_version}
 assets_api_version = ${data_bridge_defaults:resources_api_version}
 lot_secret_token = concierge
 assets_secret_token = concierge
+exc_logger = 1
 
 [convoy.yaml]
 lots_api_key = convoy
 assets_api_key = convoy
+exc_logger = 1
 
 [circus.ini]
 webapp = True

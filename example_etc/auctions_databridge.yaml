@@ -121,9 +121,20 @@ handlers:
     class: statsdhandler.StatsdHandler
     level: DEBUG
     config_path: "/path/to/buildout_dir/openregistry.buildout/example_etc/statd_api_handler.yaml"
+  journal:
+    class: ExtendedJournalHandler.ExtendedJournalHandler
+    formatter: simple
+    level: INFO
+    SYSLOG_IDENTIFIER: AUCTIONS_DATABRIDGE
 
 loggers:
   openprocurement.bridge.basic:
     handlers: [console,statsd]
     propagate: no
     level: INFO
+
+  logger_exc_logger:
+    level: ERROR
+    handlers: journal
+    qualname: exc_logger
+    propagate: 0
