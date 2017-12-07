@@ -1,4 +1,5 @@
 import sys
+import os
 import nose
 import argparse
 from pkg_resources import iter_entry_points
@@ -13,6 +14,7 @@ nose_env = {
     "NOSE_COVER_HTML": 1,
     "NOSE_PROCESSES": 0
 }
+os.environ['PYTEST_ADDOPTS'] = '--ignore=src/ --junitxml=pytest.xml'
 
 
 def get_tests(packages, test_type):
