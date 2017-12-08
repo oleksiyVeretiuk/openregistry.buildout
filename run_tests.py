@@ -12,7 +12,9 @@ nose_env = {
     "NOSE_COVER_PACKAGE": [],
     "NOSE_COVER_ERASE": 1,
     "NOSE_COVER_HTML": 1,
-    "NOSE_PROCESSES": 0
+    "NOSE_PROCESSES": 0,
+    "NOSE_WITH_DOCTEST": 1,
+    "NOSE_NOCAPTURE": 1
 }
 os.environ['PYTEST_ADDOPTS'] = '--ignore=src/ --junitxml=pytest.xml'
 
