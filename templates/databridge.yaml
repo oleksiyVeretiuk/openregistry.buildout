@@ -58,11 +58,11 @@ handlers:
     config_path: "${options['handler_config']}"
 {% end %}
 {% if 'journal' in options %}
-    journal:
-      class: ExtendedJournalHandler.ExtendedJournalHandler
-      formatter: simple
-      level: INFO
-      SYSLOG_IDENTIFIER: DATABRIDGE
+  journal:
+    class: ExtendedJournalHandler.ExtendedJournalHandler
+    formatter: simple
+    level: INFO
+    SYSLOG_IDENTIFIER: DATABRIDGE
 {% end %}
 
 loggers:
