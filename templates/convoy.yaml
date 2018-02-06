@@ -54,12 +54,7 @@
 
 
   loggers:
-    openregistry.convoy.convoy:
-      handlers: [console${',statsd' if 'statsd' in options else ''}]
-      propagate: no
-      level: DEBUG
-
-    openregistry.convoy.utils:
+    openregistry.convoy:
       handlers: [console${',statsd' if 'statsd' in options else ''}]
       propagate: no
       level: DEBUG
