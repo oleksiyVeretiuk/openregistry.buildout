@@ -31,7 +31,7 @@ exc_logger = 1
 
 [circus.ini]
 webapp = True
-databridge = True
+lots_databridge = True
 concierge = True
 convoy = True
 # For receiving monitoring data in statsd use statsd_plugin = True
