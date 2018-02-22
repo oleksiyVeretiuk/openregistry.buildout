@@ -12,7 +12,7 @@ def pin_commit_hash(package, config):
 
 def create_sandbox_cfg():
     config = ConfigParser()
-    config.read('profiles/sources.cfg')
+    config.read('profiles/development.cfg')
     all_packages = dict(config.items('sources')).keys()
     pwd = os.getcwd()
     for package in all_packages:
@@ -24,6 +24,11 @@ def create_sandbox_cfg():
             continue
     with open('profiles/sandbox.cfg', 'w') as fp:
         config.write(fp)
+    with open('profiles/sandbox.cfg', 'r') as fp:
+        config = fp.read()
+        config = config.replace('+ =', '+=')
+    with open('profiles/sandbox.cfg', 'w') as fp:
+        fp.write(config)
 
 
 if __name__ == '__main__':
