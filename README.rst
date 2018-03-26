@@ -27,9 +27,9 @@ To start environment services:
 
     bin/circusd --daemon
 
-To run openregistry.api instance:
+To run openprocurement.api instance:
 
-    bin/pserve etc/openregistry.api.ini
+    bin/pserve etc/openprocurement.api.ini
 
 Run the following command
 

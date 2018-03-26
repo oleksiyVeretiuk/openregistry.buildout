@@ -4,7 +4,7 @@ extends =
     profiles/templates.cfg
     profiles/statsd.cfg
 
-[openregistry.api.ini]
+[openprocurement.api.ini]
 couchdb_db = test
 auth_file = ${buildout:directory}/auth.ini.example
 
